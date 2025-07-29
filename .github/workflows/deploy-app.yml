@@ -43,6 +43,7 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
   code-deploy:
     name: "Code Deploy"
+    needs: [docker-build]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
