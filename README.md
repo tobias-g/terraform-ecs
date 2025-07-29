@@ -15,4 +15,4 @@ and private subnets spread across 2 availability zones (AZs).
   to deploy extra resources such as NATs. Also CIDRs split nicely when it's a
   multiple of 2.
 
-**todo** add network diagram
+![network overview](./docs/network-overview.drawio.png)
