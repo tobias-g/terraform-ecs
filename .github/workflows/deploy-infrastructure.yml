@@ -1,0 +1,40 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "What environment to deploy to"
+        default: 'sandbox'
+        type: choice
+        options:
+        - "sandbox"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  terraform-apply:
+    name: "Terraform Apply"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./terraform"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::765774143504:role/github
+          role-session-name: terraform-ecs
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@main
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Apply
+        env:
+          TF_VAR_environment: ${{ inputs.environment }}
+        run: terraform apply -no-color -auto-approve

@@ -7,6 +7,12 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  backend "s3" {
+    bucket = "terraform-ecs-sandbox-state"
+    key    = "state.tfstate"
+    region = "eu-west-1"
+  }
 }
 
 provider "aws" {

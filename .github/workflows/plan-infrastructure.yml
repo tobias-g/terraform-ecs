@@ -1,0 +1,37 @@
+name: Plan Infrastructure
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: ["sandbox"]
+    defaults:
+      run:
+        working-directory: "./terraform"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::765774143504:role/github
+          role-session-name: terraform-ecs
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@main
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Plan
+        env:
+          TF_VAR_environment: ${{ matrix.environment }}
+        run: terraform plan -no-color
