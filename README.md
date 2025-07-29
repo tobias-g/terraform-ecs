@@ -40,3 +40,18 @@ private with the appropriate security groups to only allow access for the
 services that need it.
 
 ![RDS overview](./docs/rds-overview.drawio.png)
+
+### Cross Region
+
+The solution is deployed over multiple regions (`eu-west-1` & `us-east-1`).
+
+Since some resources are global (e.g. IAM roles) we need to structure the
+Terraform code in a way to elegantly handle that. We want to utilize modules so
+we don't repeat code but also have scope to only create some resources once.
+
+To do this there is a main region and a replica region module. The main and
+replica modules have then nested modules for resources we repeat across each
+region. And the main region module also includes those extra resources shared
+across all regions.
+
+![Cross region overview](./docs/cross-region.drawio.png)
