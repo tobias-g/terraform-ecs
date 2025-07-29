@@ -18,7 +18,7 @@ resource "aws_subnet" "public_b" {
   tags = {
     Exposure    = "public"
     Name        = "${local.prefix}-${data.aws_region.current.name}b-public"
-     Description = "ECS example public subnet"
+    Description = "ECS example public subnet"
   }
 }
 
