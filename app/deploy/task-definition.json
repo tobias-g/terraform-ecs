@@ -1,0 +1,71 @@
+{
+  "family": "ecs-nodejs",
+  "executionRoleArn": "arn:aws:iam::765774143504:role/sandbox-ecs-execution",
+  "taskRoleArn": "arn:aws:iam::765774143504:role/sandbox-ecs-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "containerDefinitions": [
+    {
+      "name": "ecs-nodejs",
+      "image": "765774143504.dkr.ecr.eu-west-1.amazonaws.com/sandbox-ecs-nodejs:latest",
+      "cpu": 0,
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+      "environment": [],
+      "secrets": [],
+      "healthCheck": {
+        "retries": 2,
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:3000/ || exit 1"
+        ],
+        "timeout": 2,
+        "interval": 10,
+        "startPeriod": 10
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/ecs-nodejs",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX"
+  },
+  "tags": [
+    {
+      "key": "Name",
+      "value": "ecs-nodejs"
+    },
+    {
+      "key": "Description",
+      "value": "ECS example NodeJS task definition"
+    },
+    {
+      "key": "App",
+      "value": "terraform-ecs"
+    },
+    {
+      "key": "Repo",
+      "value": "https://github.com/tobias-g/terraform-ecs"
+    },
+    {
+      "key": "Environment",
+      "value": "sandbox"
+    }
+  ]
+}
