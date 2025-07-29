@@ -15,8 +15,3 @@ resource "aws_ecr_repository" "main" {
     Description = "Example ECS elastic container registry for NodeJS Docker image"
   }
 }
-
-resource "aws_iam_role_policy_attachment" "task" {
-  role       = aws_iam_role.task.name
-  policy_arn = aws_iam_policy.task.arn
-}

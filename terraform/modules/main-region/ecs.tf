@@ -103,6 +103,11 @@ resource "aws_iam_role" "task" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "task" {
+  role       = aws_iam_role.task.name
+  policy_arn = aws_iam_policy.task.arn
+}
+
 data "aws_iam_policy_document" "code_deploy_assume_role" {
   statement {
     effect = "Allow"
@@ -132,7 +137,7 @@ resource "aws_iam_role_policy_attachment" "code_deploy" {
 }
 
 module "ecs_nodejs" {
-  source           = "./modules/ecs"
+  source           = "../ecs"
   environment      = var.environment
   vpc_id           = module.network.vpc_id
   private_subnets  = module.network.private_subnets
