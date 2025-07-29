@@ -6,3 +6,8 @@ variable "environment" {
     error_message = "Environment must be either \"sandbox\", \"staging\" or \"prod\"."
   }
 }
+
+variable "cidr" {
+  type        = string
+  description = "CIDR range for our VPC"
+}

@@ -1,5 +1,5 @@
 module "network" {
-  source      = "./modules/network"
+  source      = "../network"
   environment = var.environment
   cidr        = var.cidr
 }
