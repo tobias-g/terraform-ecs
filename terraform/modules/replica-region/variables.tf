@@ -6,3 +6,13 @@ variable "environment" {
     error_message = "Environment must be either \"sandbox\", \"staging\" or \"prod\"."
   }
 }
+
+variable "cidr" {
+  type        = string
+  description = "CIDR range for our VPC"
+}
+
+variable "code_deploy_role" {
+  type        = string
+  description = "ARN of the role for CodeDeploy"
+}

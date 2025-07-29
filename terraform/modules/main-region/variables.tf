@@ -10,5 +10,4 @@ variable "environment" {
 variable "cidr" {
   type        = string
   description = "CIDR range for our VPC"
-  default     = "10.0.0.0/21"
 }
