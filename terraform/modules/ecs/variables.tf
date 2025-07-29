@@ -21,3 +21,8 @@ variable "public_subnets" {
   type        = list(string)
   description = "List of public subnets to deploy our loadbalancer to"
 }
+
+variable "code_deploy_role" {
+  type        = string
+  description = "ARN of the role for CodeDeploy"
+}

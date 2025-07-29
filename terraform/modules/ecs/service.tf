@@ -13,10 +13,22 @@ resource "aws_ecs_service" "nodejs" {
     assign_public_ip = false
   }
 
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
+
   load_balancer {
     container_name   = "ecs-nodejs"
     target_group_arn = aws_lb_target_group.green.arn
     container_port   = 3000
+  }
+
+  lifecycle {
+    # will be managed by CodeDeploy
+    ignore_changes = [
+      load_balancer,
+      task_definition,
+    ]
   }
 
   tags = {

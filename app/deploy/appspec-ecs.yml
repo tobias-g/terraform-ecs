@@ -1,0 +1,11 @@
+---
+version: 1
+Resources:
+- TargetService:
+    Type: AWS::ECS::Service
+    Properties:
+      TaskDefinition: PlaceholderForTaskDefinition
+      LoadBalancerInfo:
+        ContainerName: ecs-nodejs
+        ContainerPort: 3000
+
