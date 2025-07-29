@@ -103,10 +103,39 @@ resource "aws_iam_role" "task" {
   }
 }
 
+data "aws_iam_policy_document" "code_deploy_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["codedeploy.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "code_deploy" {
+  name               = "${local.prefix}-code-deploy"
+  assume_role_policy = data.aws_iam_policy_document.code_deploy_assume_role.json
+
+  tags = {
+    Name        = "${local.prefix}-code-deploy"
+    Description = "IAM role for ECS code deploy jobs"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "code_deploy" {
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+  role       = aws_iam_role.code_deploy.name
+}
+
 module "ecs_nodejs" {
-  source          = "./modules/ecs"
-  environment     = var.environment
-  vpc_id          = module.network.vpc_id
-  private_subnets = module.network.private_subnets
-  public_subnets  = module.network.public_subnets
+  source           = "./modules/ecs"
+  environment      = var.environment
+  vpc_id           = module.network.vpc_id
+  private_subnets  = module.network.private_subnets
+  public_subnets   = module.network.public_subnets
+  code_deploy_role = aws_iam_role.code_deploy.arn
 }

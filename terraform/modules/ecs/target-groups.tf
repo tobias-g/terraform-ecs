@@ -53,6 +53,13 @@ resource "aws_lb_listener_rule" "main" {
     }
   }
 
+  lifecycle {
+    # will be managed by CodeDeploy
+    ignore_changes = [
+      action,
+    ]
+  }
+
   tags = {
     Name        = "${local.prefix}-nodejs main"
     Description = "ECS example NodeJS loadbalancer/target group HTTPS listener"
