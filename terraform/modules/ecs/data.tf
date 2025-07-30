@@ -5,3 +5,5 @@
 data "aws_ecs_task_definition" "nodejs" {
   task_definition = "ecs-nodejs"
 }
+
+data "aws_caller_identity" "current" {}
